@@ -1,22 +1,71 @@
 import java.text.DecimalFormat;
+import java.util.Scanner;
 
 public class Tests {
-    public static void main(String[] args) {
-        // variables for the test scores
-        double testScore1 = 88.2;
-        double testScore2 = 78.9;
-        double testScore3 = 97.6;
+    private double ave;  //  the calculated average
+    private int count;   // the number of test scores entered
+    private int score;   //  the latest test score
 
-        //  average of the test scores
-        double average = (testScore1 + testScore2 + testScore3) / 3;
+    // Constructor
+    public Tests() {
+        this.ave = 0.0;
+        this.count = 0;
+        this.score = 0;
+    }
 
-        // format the average to 2 decimal places
+    // This  is the method to get test scores from the user and to calculate the average
+    public void getAverage() {
+        Scanner scanner = new Scanner(System.in);
+        int sum = 0;
+        int tempScore;
+
+        System.out.println("Enter test scores (press -1 to quit): ");
+        tempScore = scanner.nextInt(); // Priming the loop
+
+        while (tempScore != -1) {
+            sum += tempScore;
+            score = tempScore; // Store latest entered score
+            count++;
+
+            System.out.println("Enter test scores (press -1 to quit): ");
+            tempScore = scanner.nextInt(); // Get next score
+        }
+
+        // Calculate the average if at least one score is entered
+        if (count > 0) {
+            ave = (double) sum / count;
+        } else {
+            ave = Double.NaN; // Prevent division by zero
+        }
+
+        scanner.close();
+    }
+
+    // Returns the computed average
+    public double getAve() {
+        return ave;
+    }
+
+    // Returns the number of test scores entered
+    public int getCount() {
+        return count;
+    }
+
+    // Returns the last entered test score
+    public int getScore() {
+        return score;
+    }
+
+    // Allows setting a new test score
+    public void setScore(int newScore) {
+        score = newScore;
+    }
+
+    // Formats and displays the results
+    @Override
+    public String toString() {
         DecimalFormat df = new DecimalFormat("0.00");
-
-        // Display the test scores and averages
-        System.out.println("Test score 1:   " + testScore1);
-        System.out.println("Test score 2:   " + testScore2);
-        System.out.println("Test score 3:   " + testScore3);
-        System.out.println("The average of 3 test scores is:  " + df.format(average));
+        return "The average of the " + count + " scores entered is " + df.format(ave) + ".";
     }
 }
+
